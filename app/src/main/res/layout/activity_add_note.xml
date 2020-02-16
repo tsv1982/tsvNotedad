@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fon_add_5"
+    android:orientation="vertical"
+    tools:context=".view.AddNoteActivity">
+
+
+    <EditText
+        android:id="@+id/et_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20sp"
+        android:hint="@string/theme_of_note"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:maxLength="28"/>
+
+    <EditText
+        android:id="@+id/et_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:hint="@string/your_text"
+        android:textSize="20sp" />
+
+</LinearLayout>
