@@ -3,22 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-
         android:id="@+id/action_menu_add"
-        android:icon="@drawable/plus_wite"
+        android:icon="@drawable/plus_white"
         android:title=""
         app:showAsAction="ifRoom|withText" />
 
-
-
     <item
-        android:id="@+id/action_menu_settings_1"
-        android:title="@string/item_1"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_menu_settings_2"
-        android:title="@string/item_2"
+        android:id="@+id/action_menu_delete"
+        android:title="@string/item_setting"
         app:showAsAction="never"/>
 
 </menu>

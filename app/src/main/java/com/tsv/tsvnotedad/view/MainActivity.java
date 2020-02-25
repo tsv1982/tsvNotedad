@@ -2,33 +2,27 @@ package com.tsv.tsvnotedad.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.tsv.tsvnotedad.Items.Note;
 import com.tsv.tsvnotedad.R;
-import com.tsv.tsvnotedad.Util;
 import com.tsv.tsvnotedad.adapter.MainAdapter;
-import com.tsv.tsvnotedad.presenter.Presenter;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.tsv.tsvnotedad.model.XmlNotesModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements IMain {
+public class MainActivity extends AppCompatActivity {
 
-    private Presenter presenter;
-    private boolean aBoolean = true;
+    private static final int IDM_OPEN = 101;
+    private static final int IDM_DELETE = 102;
+
+    private MainAdapter mainAdapter;
+    private XmlNotesModel xmlNotesModel;
 
     @BindView(R.id.lv_main)
     ListView listView;
@@ -36,15 +30,16 @@ public class MainActivity extends AppCompatActivity implements IMain {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case Util.IDM_OPEN: {
+            case IDM_OPEN: {
                 Intent intent = new Intent(this, AddNoteActivity.class);
                 intent.putExtra("idItem", item.getOrder());
                 startActivity(intent);
                 break;
             }
-            case Util.IDM_DELETE: {
-                if (presenter.delete(item.getOrder())) {
+            case IDM_DELETE: {
+                if (xmlNotesModel.removeNote(item.getOrder())) {
                     showToast("item deleted");
+                    mainAdapter.notifyDataSetChanged();
                 } else {
                     showToast("item not deleted");
                 }
@@ -52,10 +47,6 @@ public class MainActivity extends AppCompatActivity implements IMain {
             }
         }
         return true;
-    }
-
-    void showToast(String s) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -66,8 +57,15 @@ public class MainActivity extends AppCompatActivity implements IMain {
                 startActivity(intent);
                 break;
             }
-            case R.id.action_menu_settings_2:
-            case R.id.action_menu_settings_1:
+            case R.id.action_menu_delete: {
+                if (xmlNotesModel.removeAllNote()) {
+                    showToast("all items deleted");
+                    mainAdapter.notifyDataSetChanged();
+                } else {
+                    showToast("not remotely");
+                }
+                break;
+            }
         }
         return true;
     }
@@ -75,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements IMain {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        menu.getItem(1).setTitle("delete all items");
         return true;
     }
 
@@ -83,40 +82,25 @@ public class MainActivity extends AppCompatActivity implements IMain {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        xmlNotesModel = XmlNotesModel.getInstance(this.getFilesDir().getPath());
+
+        mainAdapter = new MainAdapter(this, R.layout.list_main, xmlNotesModel.notes());
+        listView.setAdapter(mainAdapter);
+    }
+
+    void showToast(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showText() {
-        MainAdapter mainAdapter = new MainAdapter(this, R.layout.list_main, presenter.getList());
-        listView.setAdapter(mainAdapter);
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter = new Presenter(this);
-        getXmlResources();
-        showText();
+        mainAdapter.notifyDataSetChanged();
     }
 
-    public void getXmlResources() {
-        if (aBoolean) {
-            try {
-                XmlPullParser parser = getResources().getXml(R.xml.note);
-
-                while (parser.getEventType() != XmlPullParser.END_DOCUMENT) {
-                    if (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals("note")) {
-                        presenter.add(Integer.parseInt(String.valueOf(parser.getAttributeValue(1))),
-                                parser.getAttributeValue(3),
-                                parser.getAttributeValue(2));
-                    }
-                    parser.next();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        aBoolean = false;
-    }
 }

@@ -1,29 +1,34 @@
 package com.tsv.tsvnotedad.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.tsv.tsvnotedad.R;
-import com.tsv.tsvnotedad.Items.Note;
-import com.tsv.tsvnotedad.Util;
+import com.tsv.tsvnotedad.model.INote;
+import com.tsv.tsvnotedad.view.AddNoteActivity;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainAdapter extends ArrayAdapter<Note> implements View.OnCreateContextMenuListener {
+public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateContextMenuListener {
+
+    private static final int IDM_OPEN = 101;
+    private static final int IDM_DELETE = 102;
 
     private LayoutInflater inflater;
     private int layout;
-    private List<Note> items;
+    private List<INote> items;
 
-    public MainAdapter(Context context, int resource, List<Note> items) {
+    public MainAdapter(Context context, int resource, List<INote> items) {
         super(context, resource, items);
         this.items = items;
         this.layout = resource;
@@ -43,13 +48,21 @@ public class MainAdapter extends ArrayAdapter<Note> implements View.OnCreateCont
         }
 
         holder.textView_theme.setText(items.get(position).getTheme());
-        holder.textView_date.setText(items.get(position).getDate());
+        holder.textView_date.setText(String.valueOf(items.get(position).getDate()));
         holder.textViewId.setText(String.valueOf(items.get(position).getId()));
 
         holder.textView_note.setText(showNoteMain(items.get(position).getTextNote()));
 
-        view.setOnCreateContextMenuListener(this);
+        holder.btnOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), AddNoteActivity.class);
+                intent.putExtra("idItem", items.get(position).getId());
+                v.getContext().startActivity(intent);
+            }
+        });
 
+        view.setOnCreateContextMenuListener(this);
         return view;
     }
 
@@ -57,10 +70,10 @@ public class MainAdapter extends ArrayAdapter<Note> implements View.OnCreateCont
         String[] words = s.split(" ");
         String str = "";
         if (words.length > 4) {
-            str = words[0] + " " + words[1] + "..." ;
+            str = words[0] + " " + words[1] + "...";
             str += words[words.length / 2] + "...";
             str += words[words.length - 1];
-        }else {
+        } else {
             str = s;
         }
         return str;
@@ -71,8 +84,8 @@ public class MainAdapter extends ArrayAdapter<Note> implements View.OnCreateCont
         menu.setHeaderTitle("Select The Action");
         TextView textId = v.findViewById(R.id.id_note);
         int id = Integer.parseInt(textId.getText().toString());
-        menu.add(0, Util.IDM_OPEN, id, " OPEN");
-        menu.add(0, Util.IDM_DELETE, id, "DELETE");
+        menu.add(0, IDM_OPEN, id, " OPEN");
+        menu.add(0, IDM_DELETE, id, "DELETE");
     }
 
     static class ViewHolder {
@@ -85,6 +98,8 @@ public class MainAdapter extends ArrayAdapter<Note> implements View.OnCreateCont
         TextView textView_date;
         @BindView(R.id.id_note)
         TextView textViewId;
+        @BindView(R.id.btn_open)
+        Button btnOpen;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
