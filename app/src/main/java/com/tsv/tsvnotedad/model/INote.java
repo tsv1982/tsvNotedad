@@ -6,18 +6,13 @@ public interface INote {
 
     int getId();
 
-    void setId(int id);
+    String getTitle();
+    void setTitle(String title);
 
-    String getTheme();
+    String getText();
+    void setText(String text);
 
-    void setTheme(String theme);
+    Date getDate();
 
-    String getTextNote();
-
-    void setTextNote(String textNote);
-
-    Date getDate(); // the date will be updated automatically when either text or title gets changed
-
-    void setDate(Date date);
 
 }

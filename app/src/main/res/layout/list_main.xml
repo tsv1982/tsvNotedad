@@ -20,11 +20,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_theme"
+                android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="26"
-                android:text="@string/theme_of_note"
+                android:text="@string/title_of_note"
                 android:textColor="@color/main"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -67,3 +67,4 @@
         android:layout_height="1dp"
         android:background="@color/main" />
 </LinearLayout>
+

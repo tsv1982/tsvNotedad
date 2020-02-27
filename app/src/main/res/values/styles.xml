@@ -1,7 +1,10 @@
 <resources>
-    <!-- Base application theme. -->
+    <!-- Base application title. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Customize your title here. -->
+        <item name="android:itemBackground">@color/fon2</item>
+<!--        <item name="android:actionMenuTextColor">@color/colorPrimary</item>-->
+
         <item name="colorPrimary">@color/main</item>
         <item name="colorPrimaryDark">@color/main</item>
         <item name="colorAccent">@color/colorAccent</item>

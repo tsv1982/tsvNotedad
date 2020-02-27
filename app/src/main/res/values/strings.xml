@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Notepad</string>
     <string name="your_text">your text ...</string>
-    <string name="theme_of_note">theme of note</string>
+    <string name="title_of_note">title of note</string>
     <string name="item_setting">delete note</string>
     <string name="text_note">text note</string>
     <string name="no_subject">no subject</string>

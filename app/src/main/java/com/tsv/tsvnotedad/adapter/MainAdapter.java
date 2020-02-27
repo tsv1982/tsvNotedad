@@ -2,6 +2,9 @@ package com.tsv.tsvnotedad.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.text.Html;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,11 +50,11 @@ public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateCon
             view.setTag(holder);
         }
 
-        holder.textView_theme.setText(items.get(position).getTheme());
+        holder.textView_title.setText(items.get(position).getTitle());
         holder.textView_date.setText(String.valueOf(items.get(position).getDate()));
         holder.textViewId.setText(String.valueOf(items.get(position).getId()));
 
-        holder.textView_note.setText(showNoteMain(items.get(position).getTextNote()));
+        holder.textView_note.setText(showNoteMain(items.get(position).getText()));
 
         holder.btnOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +84,7 @@ public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateCon
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        menu.setHeaderTitle("Select The Action");
+//        menu.setHeaderTitle("Select The Action");
         TextView textId = v.findViewById(R.id.id_note);
         int id = Integer.parseInt(textId.getText().toString());
         menu.add(0, IDM_OPEN, id, " OPEN");
@@ -90,8 +93,8 @@ public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateCon
 
     static class ViewHolder {
 
-        @BindView(R.id.tv_theme)
-        TextView textView_theme;
+        @BindView(R.id.tv_title)
+        TextView textView_title;
         @BindView(R.id.tv_text_note)
         TextView textView_note;
         @BindView(R.id.tv_date)

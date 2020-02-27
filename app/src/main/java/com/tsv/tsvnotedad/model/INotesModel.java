@@ -10,8 +10,8 @@ public interface INotesModel {
 
     boolean removeAllNote();
 
-    boolean changeNote(INote note);
-
     INote findNote(int id);
+
     List<INote> notes();
 }
+

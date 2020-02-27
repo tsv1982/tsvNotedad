@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,43 +17,28 @@ import com.tsv.tsvnotedad.model.INote;
 import com.tsv.tsvnotedad.model.Note;
 import com.tsv.tsvnotedad.model.XmlNotesModel;
 
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AddNoteActivity extends AppCompatActivity {
 
-    private int id;
     private XmlNotesModel xmlNotesModel;
+    INote note;
 
     @BindView(R.id.et_add)
     EditText editTextNote;
-    @BindView(R.id.et_theme)
-    EditText editTextTheme;
+    @BindView(R.id.et_title)
+    EditText editTextTitle;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu_add: {
-                if (editTextNote.getText().toString().equals("")) {
-                    toastShow("empty note");
-                } else {
-                    if (editTextTheme.getText().toString().equals("")) {
-                        editTextTheme.setText(R.string.no_subject);
-                    }
-                    saveNote();
-                }
-                return true;
+                saveNote();
+                break;
             }
             case R.id.action_menu_delete: {
-                Log.i("MyLog", String.valueOf(id));
-                if (xmlNotesModel.removeNote(id)) {
-                    toastShow("deleted note");
-                    finish();
-                } else {
-                    toastShow("no notes to delete");
-                }
+                deleteNote();
                 break;
             }
         }
@@ -75,27 +59,46 @@ public class AddNoteActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         xmlNotesModel = XmlNotesModel.getInstance(this.getFilesDir().getPath());
 
-        getNote(id = getIntent().getIntExtra("idItem", 0));
+        getNote(getIntent().getIntExtra("idItem", 0));
     }
 
-    void toastShow(String s) {
+    private void toastShow(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
     private void saveNote() {
-        if (xmlNotesModel.addNote(new Note(id, editTextTheme.getText().toString(),
-                editTextNote.getText().toString(), new Date()))) {
-            toastShow("saved");
+        if (editTextNote.getText().toString().equals("")) {
+            toastShow("empty note");
         } else {
-            toastShow("not saved");
+            if (editTextTitle.getText().toString().equals("")) {
+                editTextTitle.setText(R.string.no_subject);
+            }
+            note = new Note(note.getId(), editTextTitle.getText().toString(),
+                    editTextNote.getText().toString());
+            if (xmlNotesModel.addNote(note)) {
+                toastShow("saved");
+            } else {
+                toastShow("not saved");
+            }
+        }
+    }
+
+    private void deleteNote() {
+        if (xmlNotesModel.removeNote(note.getId())) {
+            toastShow("deleted note");
+            finish();
+        } else {
+            toastShow("no notes to delete");
         }
     }
 
     private void getNote(int id) {
-        INote note = xmlNotesModel.findNote(id);
+        note = xmlNotesModel.findNote(id);
         if (note != null) {
-            editTextTheme.setText(note.getTheme());
-            editTextNote.setText(note.getTextNote());
+            editTextTitle.setText(note.getTitle());
+            editTextNote.setText(note.getText());
+        }else {
+            note = new Note();
         }
     }
 

@@ -9,12 +9,12 @@
 
 
     <EditText
-        android:id="@+id/et_theme"
+        android:id="@+id/et_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20sp"
-        android:hint="@string/theme_of_note"
+        android:hint="@string/title_of_note"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/main"
@@ -34,3 +34,4 @@
         android:background="@color/main" />
 
 </LinearLayout>
+

@@ -1,13 +1,13 @@
 package com.tsv.tsvnotedad.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.tsv.tsvnotedad.R;
 import com.tsv.tsvnotedad.adapter.MainAdapter;
@@ -90,11 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
     void showToast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
