@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,8 +14,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tsv.tsvnotedad.R;
-import com.tsv.tsvnotedad.model.INote;
-import com.tsv.tsvnotedad.model.Note;
+import com.tsv.tsvnotedad.model.IXmlNote;
+import com.tsv.tsvnotedad.model.XmlNote;
 import com.tsv.tsvnotedad.model.XmlNotesModel;
 
 import butterknife.BindView;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 public class AddNoteActivity extends AppCompatActivity {
 
     private XmlNotesModel xmlNotesModel;
-    INote note;
+    IXmlNote note;
 
     @BindView(R.id.et_add)
     EditText editTextNote;
@@ -73,7 +74,7 @@ public class AddNoteActivity extends AppCompatActivity {
             if (editTextTitle.getText().toString().equals("")) {
                 editTextTitle.setText(R.string.no_subject);
             }
-            note = new Note(note.getId(), editTextTitle.getText().toString(),
+            note = new XmlNote(note.getId(), editTextTitle.getText().toString(),
                     editTextNote.getText().toString());
             if (xmlNotesModel.addNote(note)) {
                 toastShow("saved");
@@ -98,7 +99,7 @@ public class AddNoteActivity extends AppCompatActivity {
             editTextTitle.setText(note.getTitle());
             editTextNote.setText(note.getText());
         }else {
-            note = new Note();
+            note = new XmlNote();
         }
     }
 

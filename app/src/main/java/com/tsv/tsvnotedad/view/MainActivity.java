@@ -13,6 +13,12 @@ import com.tsv.tsvnotedad.R;
 import com.tsv.tsvnotedad.adapter.MainAdapter;
 import com.tsv.tsvnotedad.model.XmlNotesModel;
 
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

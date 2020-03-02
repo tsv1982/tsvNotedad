@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Notepad</string>
     <string name="your_text">your text ...</string>
-    <string name="title_of_note">title of note</string>
-    <string name="item_setting">delete note</string>
-    <string name="text_note">text note</string>
+    <string name="title_of_note">title of xmlNote</string>
+    <string name="item_setting">delete xmlNote</string>
+    <string name="text_note">text xmlNote</string>
     <string name="no_subject">no subject</string>
-    <string name="date">xx.xx.xx</string>
+    <string name="time">xx.xx.xx</string>
 </resources>
