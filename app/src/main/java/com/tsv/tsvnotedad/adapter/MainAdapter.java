@@ -105,6 +105,7 @@ public class MainAdapter extends ArrayAdapter<IXmlNote> implements View.OnCreate
             ButterKnife.bind(this, view);
         }
     }
+
 }
 
 

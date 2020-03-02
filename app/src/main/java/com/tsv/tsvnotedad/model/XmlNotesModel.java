@@ -153,4 +153,5 @@ public class XmlNotesModel implements INotesModel {
     public List<IXmlNote> notes() {
         return notes;
     }
+
 }

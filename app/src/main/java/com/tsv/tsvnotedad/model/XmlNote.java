@@ -93,5 +93,4 @@ public class XmlNote implements IXmlNote {
     public void setTime(long time) {
         this.time = time;
     }
-
 }

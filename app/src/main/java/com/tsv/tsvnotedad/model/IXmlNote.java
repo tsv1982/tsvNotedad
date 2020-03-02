@@ -13,5 +13,4 @@ public interface IXmlNote {
 
     long getTime();
 
-
 }

@@ -13,5 +13,6 @@ public interface INotesModel {
     IXmlNote findNote(int id);
 
     List<IXmlNote> notes();
+
 }
 
