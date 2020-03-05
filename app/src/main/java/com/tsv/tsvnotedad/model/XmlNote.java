@@ -4,19 +4,23 @@ import org.w3c.dom.Element;
 
 import java.util.Date;
 
-public class XmlNote implements IXmlNote {
+public class XmlNote implements INote {
 
     private int id;
     private String title;
     private String text;
-    private long time;
+    private Date time;
 
     public XmlNote(int id, String title, String text) {
 
         this.id = id;
         this.title = title;
         this.text = text;
-        this.time = new Date().getTime();
+        this.time = new Date();
+    }
+
+    public XmlNote(int id) {
+        this.id = id;
     }
 
     public XmlNote() {
@@ -41,28 +45,27 @@ public class XmlNote implements IXmlNote {
                 this.title = title;
                 this.text = text;
             }
-
-            try {
-                long date = Long.parseLong(node.getAttribute("time"));
-                this.time = date;
-            } catch (NumberFormatException e) {
-                this.time = 0L;
-            }
-
+                this.time = new Date(Long.parseLong(node.getAttribute("time")));
             return true;
         } else {
             return false;
         }
     }
 
-    @Override
-    public int getId() {
-        return id;
+    public boolean saveToXml(Element element){
+        if (element != null) {
+            element.setAttribute("id", String.valueOf(id));
+            element.setAttribute("title", title);
+            element.setAttribute("text", text);
+            element.setAttribute("time", String.valueOf(time.getTime()));
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -86,11 +89,11 @@ public class XmlNote implements IXmlNote {
     }
 
     @Override
-    public long getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

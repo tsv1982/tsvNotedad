@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tsv.tsvnotedad.R;
-import com.tsv.tsvnotedad.model.IXmlNote;
+import com.tsv.tsvnotedad.model.INote;
 import com.tsv.tsvnotedad.view.AddNoteActivity;
 
 import java.util.Date;
@@ -20,16 +20,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainAdapter extends ArrayAdapter<IXmlNote> implements View.OnCreateContextMenuListener {
+public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateContextMenuListener {
 
     private static final int IDM_OPEN = 101;
     private static final int IDM_DELETE = 102;
 
     private LayoutInflater inflater;
     private int layout;
-    private List<IXmlNote> items;
+    private List<INote> items;
 
-    public MainAdapter(Context context, int resource, List<IXmlNote> items) {
+    public MainAdapter(Context context, int resource, List<INote> items) {
         super(context, resource, items);
         this.items = items;
         this.layout = resource;
@@ -49,7 +49,7 @@ public class MainAdapter extends ArrayAdapter<IXmlNote> implements View.OnCreate
         }
 
         holder.textView_title.setText(items.get(position).getTitle());
-        holder.textView_date.setText(String.valueOf(new Date(items.get(position).getTime())));
+        holder.textView_date.setText(String.valueOf(items.get(position).getTime()));
         holder.textViewId.setText(String.valueOf(items.get(position).getId()));
 
         holder.textView_note.setText(showNoteMain(items.get(position).getText()));

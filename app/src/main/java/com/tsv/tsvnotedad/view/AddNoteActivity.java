@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -14,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.tsv.tsvnotedad.R;
-import com.tsv.tsvnotedad.model.IXmlNote;
+import com.tsv.tsvnotedad.model.INote;
 import com.tsv.tsvnotedad.model.XmlNote;
 import com.tsv.tsvnotedad.model.XmlNotesModel;
 
@@ -24,7 +23,7 @@ import butterknife.ButterKnife;
 public class AddNoteActivity extends AppCompatActivity {
 
     private XmlNotesModel xmlNotesModel;
-    IXmlNote note;
+    INote note;
 
     @BindView(R.id.et_add)
     EditText editTextNote;

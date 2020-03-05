@@ -4,15 +4,15 @@ import java.util.List;
 
 public interface INotesModel {
 
-    boolean addNote(IXmlNote note);
+    boolean addNote(INote note);
 
     boolean removeNote(int id);
 
     boolean removeAllNote();
 
-    IXmlNote findNote(int id);
+    INote findNote(int id);
 
-    List<IXmlNote> notes();
+    List<INote> notes();
 
 }
 

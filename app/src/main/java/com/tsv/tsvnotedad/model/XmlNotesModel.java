@@ -7,7 +7,6 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +21,11 @@ import javax.xml.transform.stream.StreamResult;
 public class XmlNotesModel implements INotesModel {
 
     private static XmlNotesModel instance;
-    private List<IXmlNote> notes;
-    private XmlNote xmlNote;
+    private List<INote> notes;
     private String pathToFile;
+    private int notesLastId;
 
     private XmlNotesModel(String pathToFile) {
-        xmlNote = new XmlNote();
         notes = new ArrayList<>();
         this.pathToFile = pathToFile + "/notes.xml";
         loadFromXml();
@@ -50,6 +48,7 @@ public class XmlNotesModel implements INotesModel {
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    XmlNote xmlNote = new XmlNote();
                     if (xmlNote.loadFromXml((Element) nodeList.item(i))) {
                         notes.add(xmlNote);
                     }
@@ -69,16 +68,13 @@ public class XmlNotesModel implements INotesModel {
             Element nodes = document.createElement("notes");
             document.appendChild(nodes);
 
-            for (IXmlNote note : notes) {
+            for (INote note : notes) {
 
                 Element element = document.createElement("note");
-
-                element.setAttribute("id", String.valueOf(note.getId()));
-                element.setAttribute("title", note.getTitle());
-                element.setAttribute("text", note.getText());
-                element.setAttribute("date", String.valueOf(note.getTime()));
-
-                nodes.appendChild(element);
+                XmlNote xmlNote = (XmlNote) note;
+                if (xmlNote.saveToXml(element)) {
+                    nodes.appendChild(element);
+                }
             }
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -86,11 +82,12 @@ public class XmlNotesModel implements INotesModel {
 
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    private boolean changeNote(IXmlNote note) {
+    private boolean changeNote(INote note) {
         for (int i = 0; i < notes.size(); i++) {
             if (notes.get(i).getId() == note.getId()) {
                 notes.set(i, note);
@@ -101,23 +98,31 @@ public class XmlNotesModel implements INotesModel {
         return false;
     }
 
+    private INote makeEmptyNote() {
+        if (findNote(++notesLastId) != null) {
+            makeEmptyNote();
+        }
+        return new XmlNote(notesLastId);
+    }
+
     @Override
-    public boolean addNote(IXmlNote note) {
+    public boolean addNote(INote note) {
         if (findNote(note.getId()) != null) {
             return changeNote(note);
         } else {
-            if (note.getId() == 0) {
-                note.setId(new SecureRandom().nextInt(99999));
-            }
-            notes.add(note);
-            saveToXml();
+                XmlNote makeNote = (XmlNote) makeEmptyNote();
+                makeNote.setTitle(note.getTitle());
+                makeNote.setText(note.getText());
+                makeNote.setTime(note.getTime());
+                notes.add(makeNote);
+                saveToXml();
             return true;
         }
     }
 
     @Override
     public boolean removeNote(int id) {
-        IXmlNote note = findNote(id);
+        INote note = findNote(id);
         if (note != null) {
             notes.remove(note);
             saveToXml();
@@ -140,8 +145,8 @@ public class XmlNotesModel implements INotesModel {
     }
 
     @Override
-    public IXmlNote findNote(int id) {
-        for (IXmlNote note : notes) {
+    public INote findNote(int id) {
+        for (INote note : notes) {
             if (note.getId() == id) {
                 return note;
             }
@@ -150,7 +155,7 @@ public class XmlNotesModel implements INotesModel {
     }
 
     @Override
-    public List<IXmlNote> notes() {
+    public List<INote> notes() {
         return notes;
     }
 

@@ -1,9 +1,10 @@
 package com.tsv.tsvnotedad.model;
 
-public interface IXmlNote {
+import java.util.Date;
+
+public interface INote {
 
     int getId();
-    void setId(int id);
 
     String getTitle();
     void setTitle(String title);
@@ -11,6 +12,6 @@ public interface IXmlNote {
     String getText();
     void setText(String text);
 
-    long getTime();
+    Date getTime();
 
 }
