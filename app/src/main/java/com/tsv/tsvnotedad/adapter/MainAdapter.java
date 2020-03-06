@@ -14,7 +14,6 @@ import com.tsv.tsvnotedad.R;
 import com.tsv.tsvnotedad.model.INote;
 import com.tsv.tsvnotedad.view.AddNoteActivity;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,19 +47,17 @@ public class MainAdapter extends ArrayAdapter<INote> implements View.OnCreateCon
             view.setTag(holder);
         }
 
-        holder.textView_title.setText(items.get(position).getTitle());
-        holder.textView_date.setText(String.valueOf(items.get(position).getTime()));
-        holder.textViewId.setText(String.valueOf(items.get(position).getId()));
+        INote item = items.get(position);
 
-        holder.textView_note.setText(showNoteMain(items.get(position).getText()));
+        holder.textViewId.setText(String.valueOf(item.getId()));
+        holder.textView_title.setText(item.getTitle());
+        holder.textView_note.setText(showNoteMain(item.getText()));
+        holder.textView_date.setText(String.valueOf(item.getTime()));
 
-        holder.btnOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), AddNoteActivity.class);
-                intent.putExtra("idItem", items.get(position).getId());
-                v.getContext().startActivity(intent);
-            }
+        holder.btnOpen.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), AddNoteActivity.class);
+            intent.putExtra("idItem", item.getId());
+            v.getContext().startActivity(intent);
         });
 
         view.setOnCreateContextMenuListener(this);

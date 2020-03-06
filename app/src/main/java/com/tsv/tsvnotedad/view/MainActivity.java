@@ -31,10 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case IDM_OPEN: {
-                Intent intent = new Intent(this, AddNoteActivity.class);
-                intent.putExtra("idItem", item.getOrder());
-                startActivity(intent);
-                break;
+                startActivity(new Intent(this, AddNoteActivity.class).putExtra("idItem", item.getOrder()));
             }
             case IDM_DELETE: {
                 if (xmlNotesModel.removeNote(item.getOrder())) {
@@ -53,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_menu_add: {
-                Intent intent = new Intent(this, AddNoteActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, AddNoteActivity.class));
                 break;
             }
             case R.id.action_menu_delete: {

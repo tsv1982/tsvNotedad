@@ -69,7 +69,6 @@ public class XmlNotesModel implements INotesModel {
             document.appendChild(nodes);
 
             for (INote note : notes) {
-
                 Element element = document.createElement("note");
                 XmlNote xmlNote = (XmlNote) note;
                 if (xmlNote.saveToXml(element)) {
@@ -110,12 +109,12 @@ public class XmlNotesModel implements INotesModel {
         if (findNote(note.getId()) != null) {
             return changeNote(note);
         } else {
-                XmlNote makeNote = (XmlNote) makeEmptyNote();
-                makeNote.setTitle(note.getTitle());
-                makeNote.setText(note.getText());
-                makeNote.setTime(note.getTime());
-                notes.add(makeNote);
-                saveToXml();
+            XmlNote makeNote = (XmlNote) makeEmptyNote();
+            makeNote.setTitle(note.getTitle());
+            makeNote.setText(note.getText());
+            makeNote.setTime(note.getTime());
+            notes.add(makeNote);
+            saveToXml();
             return true;
         }
     }
@@ -139,7 +138,6 @@ public class XmlNotesModel implements INotesModel {
             saveToXml();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

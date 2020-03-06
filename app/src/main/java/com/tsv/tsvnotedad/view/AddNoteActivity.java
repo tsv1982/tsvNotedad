@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class AddNoteActivity extends AppCompatActivity {
 
     private XmlNotesModel xmlNotesModel;
-    INote note;
+    private INote note;
 
     @BindView(R.id.et_add)
     EditText editTextNote;

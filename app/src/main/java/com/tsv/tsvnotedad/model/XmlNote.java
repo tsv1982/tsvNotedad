@@ -11,19 +11,19 @@ public class XmlNote implements INote {
     private String text;
     private Date time;
 
-    public XmlNote(int id, String title, String text) {
-
-        this.id = id;
-        this.title = title;
-        this.text = text;
-        this.time = new Date();
+    public XmlNote() {
     }
 
     public XmlNote(int id) {
         this.id = id;
     }
 
-    public XmlNote() {
+    public XmlNote(int id, String title, String text) {
+
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.time = new Date();
     }
 
     public boolean loadFromXml(Element node) {
