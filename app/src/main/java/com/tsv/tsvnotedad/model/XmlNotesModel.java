@@ -1,5 +1,7 @@
 package com.tsv.tsvnotedad.model;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -8,6 +10,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,7 +30,7 @@ public class XmlNotesModel implements INotesModel {
 
     private XmlNotesModel(String pathToFile) {
         notes = new ArrayList<>();
-        this.pathToFile = pathToFile + "/notes.xml";
+        this.pathToFile = pathToFile;
         loadFromXml();
     }
 
@@ -39,28 +42,43 @@ public class XmlNotesModel implements INotesModel {
     }
 
     private boolean loadFromXml() {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(pathToFile));
-            Element element = document.getDocumentElement();
-            NodeList nodeList = element.getChildNodes();
+        File folder = new File(pathToFile);
+        File[] files = folder.listFiles();
 
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
+        try {
+            NodeList nodeList = null;
+            for (int i = 0; i < files.length; i++) {
+                Log.i("MyLog", (files[i].getPath()));
+
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(new File(files[i].getPath()));
+                Element element = document.getDocumentElement();
+                nodeList = element.getChildNodes();
+            }
+            for (int j = 0; j < nodeList.getLength(); j++) {
+                if (nodeList.item(j).getNodeType() == Node.ELEMENT_NODE) {
                     XmlNote xmlNote = new XmlNote();
-                    if (xmlNote.loadFromXml((Element) nodeList.item(i))) {
+                    if (xmlNote.loadFromXml((Element) nodeList.item(j))) {
                         notes.add(xmlNote);
+                        Log.i("MyLog", String.valueOf(xmlNote.getId()));
                     }
                 }
             }
-            return true;
+
         } catch (Exception e) {
             return false;
         }
+
+        return true;
     }
 
+
     private boolean saveToXml() {
+        Date date = new Date();
+//        for (int i = 0; i <10 ; i++) {
+//            System.out.println(date.getTime()-i);
+//        }
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -77,7 +95,7 @@ public class XmlNotesModel implements INotesModel {
             }
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(pathToFile)));
+            transformer.transform(new DOMSource(document), new StreamResult(new FileOutputStream(pathToFile + "/" + date.getTime() + ".xml")));
 
             return true;
         } catch (Exception e) {
